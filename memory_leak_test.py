@@ -39,7 +39,6 @@ def count_objects():
 
 
 if __name__ == "__main__":
-    # Add command-line argument parsing
     parser = argparse.ArgumentParser(description="Memory leak demonstration")
     parser.add_argument(
         "--mode",
@@ -55,15 +54,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Handle garbage collection based on args
+    gc.set_debug(gc.DEBUG_LEAK)
     if not args.gc_enabled:
         gc.disable()
         print("Garbage collection disabled")
-    else:
-        gc.enable()
-        print("Garbage collection enabled")
 
-    # Select run mode based on args
     if args.mode == "leak":
         run_mode = code_with_leak
     else:
@@ -76,4 +71,7 @@ if __name__ == "__main__":
             sleep(1)
         if s % 100 == 0:
             count_objects()
+        if s % 1000 == 0:
+            print(f"Check memory leak step[{s}]:")
+            gc.collect()
         run_mode(s)
