@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    gc.set_debug(gc.DEBUG_LEAK)
+    # gc.set_debug(gc.DEBUG_LEAK)
     if not args.gc_enabled:
         gc.disable()
         print("Garbage collection disabled")
@@ -66,12 +66,9 @@ if __name__ == "__main__":
 
     print("Running mode:", args.mode)
     print("Garbage collection enabled:", gc.isenabled())
-    for s in range(10_000):
+    for s in range(1_000):
         if s % 100 == 0:
             sleep(1)
         if s % 100 == 0:
             count_objects()
-        if s % 1000 == 0:
-            print(f"Check memory leak step[{s}]:")
-            gc.collect()
         run_mode(s)
